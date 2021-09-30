@@ -26,7 +26,6 @@ public class Player
         this.points = 0;
     }
 
-
     public List<Card> getPlayerCards()
     {
         return playerCards;
@@ -37,9 +36,9 @@ public class Player
         return trick;
     }
 
-    public void setTrick(Card trick)
+    public void setTrick(List<Card> trick)
     {
-        this.trick.add(trick);
+        this.trick.addAll(trick);
     }
 
     public String getName()
@@ -57,51 +56,8 @@ public class Player
         return points;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public void acceptCard(Card card)
-    {
-        playerCards.add(card);
-    }
-
     public void acceptCards(List<Card> cards)
     {
         playerCards.addAll(cards);
-    }
-
-    public Card giveCard()
-    {
-        return playerCards.remove(0);
-    }
-
-    public Card giveCard(Rank rank, Suit suit) // todo сделать исключения
-    {
-        try
-        {
-            return playerCards.remove(playerCards.indexOf(new Card(rank, suit)));
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-    }
-
-    public List<Card> giveCards(int numberCards)
-    {
-        List<Card> returnedCards = new ArrayList<>();
-        for (int i = 0; i < numberCards; i++)
-        {
-            returnedCards.add(playerCards.remove(i));
-        }
-        return returnedCards;
-    }
-
-
-    public void setPlayerCards(List<Card> playerCards)
-    {
-        this.playerCards = playerCards;
     }
 }
