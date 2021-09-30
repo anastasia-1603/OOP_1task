@@ -10,12 +10,6 @@ public class Card
         this.suit = suit;
     }
 
-    public Card()
-    {
-        this.rank = null;
-        this.suit = null;
-    }
-
     @Override
     public boolean equals(Object obj)
     {

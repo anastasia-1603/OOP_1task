@@ -19,7 +19,6 @@ public class Main
         players.add(new Player(new ArrayList<Card>(), "4"));
         Game game = gameService.createGame(players);
         gameService.playGame(game);
-        gameService.printGame(game);
 
         //gameService.printGame(game);
 
