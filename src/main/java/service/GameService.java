@@ -1,135 +1,120 @@
 package service;
 
+import exceptions.EmptyPlayersException;
+import exceptions.NullPlayersException;
 import model.*;
 
 import java.util.*;
 
 public class GameService
 {
+    private final PlayerService playerService = new PlayerService();
+    private final Scanner scn = new Scanner(System.in);
+
+    public GameService()
+    {
+    }
+
+    public List<Player> createDefaultPlayers(int numberOfPlayers)
+    {
+        List<Player> players = new LinkedList<>();
+        for (int i = 0; i < numberOfPlayers; i++)
+        {
+            players.add(new Player(String.valueOf(i)));
+        }
+        return players;
+    }
+
     public Game createGame(List<Player> players)
     {
         Game game = new Game();
-        game.setPlayers(players);
+        if (players != null)
+        {
+            game.setPlayers(players);
+        }
+        else
+        {
+            throw new NullPointerException();
+        }
         return game;
     }
 
-    private void dealCards(List<Player> players)
-    {
-        List<Card> deck = createDeck();
-        Collections.shuffle(deck);
-        int numberCards = deck.size() / players.size();
-        for (Player player : players)
-        {
-            List<Card> cards = deck.subList(0, numberCards);
-            player.acceptCards(cards);
-            deck.removeAll(cards);
-        }
-        deck.clear();
-    }
-
-    private List<Card> createDeck()
-    {
-        List<Card> allCards = new ArrayList<>();
-        for (Rank rank : Rank.values())
-        {
-            for (Suit suit : Suit.values())
-            {
-                allCards.add(new Card(rank, suit));
-            }
-        }
-        return allCards;
-    }
-
-    public void playGame(Game game)
+    public void playGame(Game game) throws Exception
     {
         int round = 1;
-        while (!isPointsMore100(game.getPlayers()))
+        while (!playerService.isPointsMore100(game.getPlayers()))
         {
             playRound(game);
-            scorePoints(game.getPlayers());
+            playerService.scorePoints(game.getPlayers());
             printRound(game, round++);
         }
-        printWinner(findWinner(game.getPlayers()));
+        printWinner(playerService.findWinner(game.getPlayers()));
     }
 
-    private void playRound(Game game)
+    private void playRound(Game game) throws Exception
     {
-        dealCards(game.getPlayers());
-        while (calcNumberAllCards(game.getPlayers()) > 0)
+        playerService.dealCards(game.getPlayers());
+        while (playerService.calcNumberAllCards(game.getPlayers()) > 0)
         {
-            playTrick(game.getPlayers());
+           // playTrick(game.getPlayers());
         }
     }
 
-    private boolean isPointsMore100(List<Player> players)
-    {
-        for (Player player : players)
-        {
-            if (player.getPoints() >= 100)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Player findWinner(List<Player> players)
-    {
-        Player winner = players.get(0);
-        for (Player player : players)
-        {
-            if (player.getPoints() < winner.getPoints())
-            {
-                winner = player;
-            }
-        }
-        return winner;
-    }
-
-    private void playTrick(List<Player> players)
+    private boolean isFirstTrick = true;
+    /*private void playTrick(List<Player> players) throws Exception
     {
         Map<Player, Card> trick = new HashMap<>();
         Player winner = new Player();
         Card maxCard = new Card(Rank.TWO, Suit.SPADES);
+
+        if (players != null)
+        { if (players.size() != 0)
+            {
+                Card playerCard;
+                Player currentPlayer;
+                if (isFirstTrick)
+                {
+                    currentPlayer = findWhoStart(players);
+                    if (currentPlayer != null)
+                    {
+                        playerCard = playerService.removeCard(currentPlayer, new Card(Rank.TWO, Suit.CLUBS));
+                    }
+                    isFirstTrick = !isFirstTrick;
+                }
+                else
+                {
+                    for (Player player : players)
+                    {
+                        playerCard = player.getPlayerCards().get(0);
+
+                    }
+                }
+                trick.put(currentPlayer, currentPlayer.getPlayerCards().remove(0));
+                if (playerCard.getRank().ordinal() > maxCard.getRank().ordinal())
+                {
+                    maxCard = playerCard;
+                    winner = currentPlayer;
+                }
+                winner.setTrick(new ArrayList<>(trick.values()));
+            }
+            else {
+                throw new EmptyPlayersException();
+            } } else {
+            throw new NullPlayersException(); }
+    }*/
+
+
+    private Player findWhoStart(List<Player> players)
+    {
+        Card requiredCard = new Card(Rank.TWO, Suit.CLUBS);
         for (Player player : players)
         {
-            Card playerCard = player.getPlayerCards().get(0);
-            trick.put(player, player.getPlayerCards().remove(0));
-            if (playerCard.getRank().ordinal() > maxCard.getRank().ordinal())
+            if (player.getPlayerCards().contains(requiredCard))
             {
-                maxCard = playerCard;
-                winner = player;
+                return player;
             }
         }
-        winner.setTrick(new ArrayList<>(trick.values()));
-    }
-
-    private int calcNumberAllCards(List<Player> players)
-    {
-        int numberCards = 0;
-        for (Player player : players)
-        {
-            numberCards += player.getPlayerCards().size();
-        }
-        return numberCards;
-    }
-
-    private void scorePoints(List<Player> players)
-    {
-        for (Player player : players)
-        {
-            for (Card card : player.getTrick())
-            {
-                if (card.getSuit() == Suit.HEARTS)
-                {
-                    player.setPoints(1);
-                }
-                else if (card.getSuit() == Suit.SPADES && card.getRank() == Rank.QUEEN)
-                {
-                    player.setPoints(13);
-                }
-            }
-        }
+        return null;
     }
 
     private void printRound(Game game, int numberRound)
@@ -137,12 +122,18 @@ public class GameService
         System.out.printf("Round %d\n", numberRound);
         for (Player player : game.getPlayers())
         {
-            System.out.printf("Player %s: cards ", player.getName());
+            System.out.printf("Player %s: cards", player.getName());
             printCards(player.getPlayerCards());
             System.out.printf("\nNumber of points: %d", player.getPoints());
             System.out.println();
         }
     }
+
+/*    private int readNumberOfPlayers()
+    {
+        System.out.println("Enter the number of players: ");
+        return scn.nextInt();
+    }*/
 
     private void printCards(List<Card> cards)
     {

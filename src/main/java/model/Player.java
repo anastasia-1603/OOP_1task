@@ -6,23 +6,23 @@ import java.util.List;
 public class Player
 {
     private List<Card> playerCards;
-    private List<Card> trick; // взятка
+    private List<Card> trick; 
     private String name;
     private int points;
-
-    public Player(List<Card> cards, String name)
-    {
-        this.playerCards = cards;
-        this.trick = new ArrayList<>();
-        this.name = name;
-        this.points = 0;
-    }
 
     public Player()
     {
         this.playerCards = new ArrayList<>();
         this.trick = new ArrayList<>();
         this.name = null;
+        this.points = 0;
+    }
+
+    public Player(String name)
+    {
+        this.playerCards = new ArrayList<>();
+        this.trick = new ArrayList<>();
+        this.name = name;
         this.points = 0;
     }
 
@@ -59,5 +59,10 @@ public class Player
     public void acceptCards(List<Card> cards)
     {
         playerCards.addAll(cards);
+    }
+
+    public void setPlayerCards(List<Card> playerCards)
+    {
+        this.playerCards = playerCards;
     }
 }
