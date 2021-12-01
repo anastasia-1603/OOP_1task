@@ -1,13 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Player
 {
     private List<Card> playerCards;
     private List<Card> trick; 
-    private String name;
+    private final String name;
     private int points;
 
     public Player()
@@ -36,7 +37,7 @@ public class Player
         return trick;
     }
 
-    public void setTrick(List<Card> trick)
+    public void setTrick(Collection<Card> trick)
     {
         this.trick.addAll(trick);
     }

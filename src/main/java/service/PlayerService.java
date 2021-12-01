@@ -1,6 +1,6 @@
 package service;
 
-import exceptions.EmptyPlayersException;
+import exceptions.EmptyListException;
 import exceptions.NullPlayersException;
 import model.Card;
 import model.Player;
@@ -39,13 +39,64 @@ public class PlayerService
         return false;
     }
 
-    /*public Card makeAMove(Player player, Suit suit)
+/*    public int findNotHearts(List<Card> cards)
     {
-        if (isHaveCard(suit, player))
-        {
 
-        }
     }*/
+
+    public int findIndex(Player player, Suit suit)
+    {
+        int index = -1;
+        for (Card card : player.getPlayerCards())
+        {
+            if (card.getSuit() == suit)
+            {
+                index = player.getPlayerCards().indexOf(card);
+                break;
+            }
+        }
+        return index;
+    }
+
+    public Card getCard(Player player, int index) throws EmptyListException
+    {
+        if (player != null)
+        {
+            if (player.getPlayerCards().size() != 0)
+            {
+                return player.getPlayerCards().get(index);
+            }
+            else { throw new EmptyListException(); }
+        }
+        else { throw new EmptyListException(); }
+    }
+
+    public Card makeAMove(Player player, Card card) throws Exception
+    {
+        int index;
+        if (player != null)
+        {
+            if (player.getPlayerCards().size() != 0)
+            {
+                if (player.getPlayerCards().contains(card))
+                {
+                    index = player.getPlayerCards().indexOf(card);
+                }
+                else
+                {
+                    index = findIndex(player, card.getSuit());
+                }
+                if (index == -1)
+                {
+                    index = 0;
+                }
+            }
+            else { throw new EmptyListException(); }
+        }
+        else { throw new NullPlayersException(); }
+
+        return player.getPlayerCards().remove(index);
+    }
 
    /* public void HandOverCard(Card card, Player player1, Player player2) throws Exception
     {
@@ -58,16 +109,6 @@ public class PlayerService
             throw new Exception("The player doesn't have this card");
         }
     }*/
-
-    public Card removeCard(Player player, Card card)
-    {
-        int index = -1;
-        if (player.getPlayerCards().contains(card))
-        {
-           index = player.getPlayerCards().indexOf(card);
-        }
-        return player.getPlayerCards().remove(index);
-    }
 
     public void dealCards(List<Player> players) throws Exception
     {
@@ -87,7 +128,7 @@ public class PlayerService
                 deck.clear();
 
             } else
-            { throw new EmptyPlayersException(); }
+            { throw new EmptyListException(); }
 
         } else
         { throw new NullPlayersException(); }

@@ -1,5 +1,5 @@
 package model;
-public class Card
+public class Card implements Comparable<Card>
 {
     private final Rank rank;
     private final Suit suit;
@@ -29,5 +29,17 @@ public class Card
     public Suit getSuit()
     {
         return suit;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getRank().symbol + this.getSuit().unicode;
+    }
+
+    @Override
+    public int compareTo(Card card)
+    {
+        return rank.priority - card.getRank().priority;
     }
 }
