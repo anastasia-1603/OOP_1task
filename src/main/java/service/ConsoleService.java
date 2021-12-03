@@ -11,7 +11,7 @@ public class ConsoleService
 {
     public void printWinner(Player player)
     {
-        System.out.printf(Colors.RED_UNDERLINED + "%s win!" + Colors.RESET, player.getName());
+        System.out.printf(Colors.GREEN_BOLD_BRIGHT + "%s win!" + Colors.RESET, player.getName());
     }
 
     public void printMove(Card move)
