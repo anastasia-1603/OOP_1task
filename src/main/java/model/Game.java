@@ -1,30 +1,10 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Game
 {
     private List<Player> players;
-    private List<Card> allCards;
-    private static int seed = 1;
-
-    public Game(List<Player> players)
-    {
-        this.players = players;
-        List<Card> allCards = new ArrayList<>();
-        for (Rank rank : Rank.values())
-        {
-            for (Suit suit : Suit.values())
-            {
-                allCards.add(new Card(rank, suit));
-            }
-        }
-        Collections.shuffle(allCards, new Random(seed++));
-        this.allCards = allCards;
-    }
 
     public List<Player> getPlayers()
     {
@@ -34,15 +14,5 @@ public class Game
     public void setPlayers(List<Player> players)
     {
         this.players = players;
-    }
-
-    public List<Card> getAllCards()
-    {
-        return allCards;
-    }
-
-    public void setAllCards(List<Card> allCards)
-    {
-        this.allCards = allCards;
     }
 }
