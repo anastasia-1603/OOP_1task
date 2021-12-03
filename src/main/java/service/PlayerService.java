@@ -13,7 +13,6 @@ import java.util.List;
 
 public class PlayerService
 {
-
     public Player findWinner(List<Player> players)
     {
         Player winner = players.get(0);
@@ -38,11 +37,6 @@ public class PlayerService
         }
         return false;
     }
-
-/*    public int findNotHearts(List<Card> cards)
-    {
-
-    }*/
 
     public int findIndex(Player player, Suit suit)
     {
@@ -98,18 +92,6 @@ public class PlayerService
         return player.getPlayerCards().remove(index);
     }
 
-   /* public void HandOverCard(Card card, Player player1, Player player2) throws Exception
-    {
-        if (removeCard(player1, card))
-        {
-            player2.getPlayerCards().add(card);
-        }
-        else
-        {
-            throw new Exception("The player doesn't have this card");
-        }
-    }*/
-
     public void dealCards(List<Player> players) throws Exception
     {
         List<Card> deck = createDeck();
@@ -155,37 +137,6 @@ public class PlayerService
             numberCards += player.getPlayerCards().size();
         }
         return numberCards;
-    }
-
-    public boolean isHaveCard(Card card, Player player)
-    {
-        if (player != null)
-        {
-            return player.getPlayerCards().contains(card);
-        }
-        else
-        {
-            throw new NullPointerException();
-        }
-    }
-
-    public boolean isHaveCard(Suit suit, Player player)
-    {
-        if (player != null)
-        {
-            for (Card card : player.getPlayerCards())
-            {
-                if (card.getSuit() == suit)
-                {
-                    return true;
-                }
-            }
-        }
-        else
-        {
-            throw new NullPointerException();
-        }
-        return false;
     }
 
     public void scorePoints(List<Player> players)

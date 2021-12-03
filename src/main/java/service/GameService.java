@@ -42,7 +42,7 @@ public class GameService
         while (!playerService.isPointsMore100(game.getPlayers()))
         {
             consoleService.printRound(round++);
-            playTricks(game);
+            playRound(game);
             playerService.scorePoints(game.getPlayers());
             consoleService.printPoints(game.getPlayers());
             playerService.dealCards(game.getPlayers());
@@ -51,11 +51,6 @@ public class GameService
     }
 
     private void playRound(Game game) throws Exception
-    {
-        playTricks(game);
-    }
-
-    private void playTricks(Game game) throws Exception
     {
         List<Player> players = game.getPlayers();
         Map<Player, Card> trick = new HashMap<>();
@@ -70,8 +65,7 @@ public class GameService
                 {
                     for (Player player : players)
                     {
-                        consoleService.printCards(player);
-                        consoleService.printCards(player.getPlayerCards());
+                        consoleService.printPlayerCards(player);
                         Card move = playerService.makeAMove(player, maxCard);
                         consoleService.printMove(move);
                         trick.put(player, move);
@@ -95,10 +89,5 @@ public class GameService
             }
             else { throw new EmptyListException(); }
         } else { throw new NullPlayersException(); }
-    }
-
-    public void playTrick(List<Player> players)
-    {
-
     }
 }

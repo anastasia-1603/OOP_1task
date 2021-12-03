@@ -2,7 +2,6 @@ package service;
 
 import model.Card;
 import model.Colors;
-import model.Game;
 import model.Player;
 
 import java.util.List;
@@ -40,9 +39,10 @@ public class ConsoleService
         System.out.printf(Colors.GREEN_UNDERLINED+"Round %d\n"+Colors.RESET, numberRound);
     }
 
-    public void printCards(Player player)
+    public void printPlayerCards(Player player)
     {
         System.out.printf("Player %s cards: ", Colors.PURPLE_BOLD + player.getName() + Colors.RESET);
+        printCards(player.getPlayerCards());
     }
 
     public void printPoints(List<Player> players)
